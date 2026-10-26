@@ -31,7 +31,7 @@ export function TransactionsPage({
             <RefreshCw size={14} className={isLoading ? 'animate-spin' : ''} />
             <span>Refresh</span>
           </button>
-          <button onClick={onOpenTransfer} className="btn btn-primary btn-sm">
+          <button onClick={() => onOpenTransfer()} className="btn btn-primary btn-sm">
             <ArrowUpRight size={16} />
             <span>New Transfer</span>
           </button>

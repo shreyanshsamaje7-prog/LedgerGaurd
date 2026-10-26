@@ -74,7 +74,7 @@ export function DashboardPage({
             <span>New Account</span>
           </button>
 
-          <button onClick={onOpenTransfer} className="btn btn-primary btn-sm">
+          <button onClick={() => onOpenTransfer()} className="btn btn-primary btn-sm">
             <ArrowUpRight size={15} />
             <span>Send Money</span>
           </button>

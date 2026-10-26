@@ -98,7 +98,7 @@ export function Navbar({ onOpenTransfer, onOpenDeposit }) {
 
       {/* Right Actions & User Profile */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-        <button onClick={onOpenTransfer} className="btn btn-primary btn-sm">
+        <button onClick={() => onOpenTransfer && onOpenTransfer()} className="btn btn-primary btn-sm">
           <ArrowRightLeft size={16} />
           <span>New Transfer</span>
         </button>

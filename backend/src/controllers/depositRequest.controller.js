@@ -163,7 +163,6 @@ async function approveDepositRequestController(req, res) {
         await request.save({ session });
 
         await session.commitTransaction();
-        session.endSession();
 
         // Send transaction email asynchronously
         if (request.user?.email) {
@@ -181,11 +180,14 @@ async function approveDepositRequestController(req, res) {
             transaction
         });
     } catch (err) {
-        await session.abortTransaction();
-        session.endSession();
+        if (session.inTransaction()) {
+            await session.abortTransaction();
+        }
         return res.status(500).json({
             message: "Failed to process funds disbursement: " + err.message
         });
+    } finally {
+        await session.endSession();
     }
 }
 

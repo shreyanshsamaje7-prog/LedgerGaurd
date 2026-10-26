@@ -55,7 +55,10 @@ function MainApp() {
   }, [isAuthenticated, fetchTransactions]);
 
   const handleOpenTransfer = (fromAccountId = null) => {
-    setTransferFromAcc(fromAccountId);
+    const validId = typeof fromAccountId === 'string'
+      ? fromAccountId
+      : (fromAccountId && typeof fromAccountId._id === 'string' ? fromAccountId._id : null);
+    setTransferFromAcc(validId);
     setIsTransferOpen(true);
   };
 

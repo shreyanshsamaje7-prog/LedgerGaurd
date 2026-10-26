@@ -21,7 +21,16 @@ export function TransferModal({ isOpen, onClose, initialFromAccount = null, onSu
   // Initialize or reset when modal opens
   useEffect(() => {
     if (isOpen) {
-      const defaultFrom = initialFromAccount || accounts[0]?._id || '';
+      let initialId = null;
+      if (typeof initialFromAccount === 'string') {
+        initialId = initialFromAccount;
+      } else if (initialFromAccount && typeof initialFromAccount._id === 'string') {
+        initialId = initialFromAccount._id;
+      }
+
+      const matchingAcc = accounts.find((a) => String(a._id) === String(initialId));
+      const defaultFrom = matchingAcc ? matchingAcc._id : (accounts[0]?._id || '');
+
       setFromAccount(defaultFrom);
       setToAccount('');
       setAmount('');
@@ -31,7 +40,14 @@ export function TransferModal({ isOpen, onClose, initialFromAccount = null, onSu
     }
   }, [isOpen, initialFromAccount, accounts]);
 
-  const selectedFromAcc = accounts.find((a) => a._id === fromAccount);
+  // Ensure an account is selected once accounts are loaded
+  useEffect(() => {
+    if (isOpen && (!fromAccount || !accounts.some((a) => String(a._id) === String(fromAccount))) && accounts.length > 0) {
+      setFromAccount(accounts[0]._id);
+    }
+  }, [isOpen, accounts, fromAccount]);
+
+  const selectedFromAcc = accounts.find((a) => String(a._id) === String(fromAccount));
   const currentBalance = selectedFromAcc ? Number(selectedFromAcc.balance) || 0 : 0;
 
   const handleMaxAmount = () => {
