@@ -1,10 +1,12 @@
-const API_BASE = import.meta.env.VITE_API_BASE_URL || '/api';
+const RAW_API_BASE = import.meta.env.VITE_API_BASE_URL || '/api';
+const API_BASE = RAW_API_BASE.replace(/\/+$/, '');
 
 /**
  * Standard HTTP client with credentials and token injection
  */
 export async function apiRequest(endpoint, options = {}) {
-  const url = `${API_BASE}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
+  const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+  const url = `${API_BASE}${cleanEndpoint}`;
 
   const token = localStorage.getItem('lg_auth_token');
 
